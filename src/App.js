@@ -15,7 +15,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        <Route exact path="/react-github-pages" element={<Home />} />
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/auth" element={<Connection/>} />
         <Route path="/create" element={<QuestionForm/>} />
@@ -26,10 +26,11 @@ function App() {
   )
 }
 function NoMatch() {
+    console.log(window.location.href)
   return (
     <div className="quiz-container flex-column" >
       <h1>Nothing to see here!</h1>
-      <button className="quiz-container"><Link style={{"textDecoration": "none", color:"white"}} to="/">Go to the home page</Link></button>
+      <button className="quiz-container"><Link style={{"textDecoration": "none", color:"white"}} to="/react-github-pages/">Go to the home page</Link></button>
     </div>
   )
 }
