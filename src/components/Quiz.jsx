@@ -154,7 +154,7 @@ const Quiz = () => {
             </p>
           </div>
           <div style={{display: "flex", justifyContent: "center"}}>
-            <button><Link style={{"textDecoration": "none", color: "white"}} to="/">Home</Link></button>
+            <button><Link style={{"textDecoration": "none", color: "white"}} to="/react-github-pages">Home</Link></button>
           </div>
         </div>
       )

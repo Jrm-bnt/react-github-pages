@@ -3,23 +3,28 @@ import {Link, useNavigate} from "react-router-dom"
 import toast, {Toaster} from 'react-hot-toast'
 import {CONSTANT} from "../constant/constant";
 
-const QuestionForm = () => {
-  const [question, setQuestion] = useState('')
-  const [suggestions, setSuggestions] = useState(['', '', '', ''])
-  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(0)
+const QuestionForm = (props) => {
+  const {data, setSelectedQuestion} = props
+  const [question, setQuestion] = useState(data?.question ||'')
+  const [suggestions, setSuggestions] = useState(data?.options || ['', '', '', ''])
+  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(data?.correctAnswer || 0)
   const [count, setCount] = useState(0)
   const navigate = useNavigate()
 
   const sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms))
   }
+  // useEffect(() => {
+  //   fetch(`${CONSTANT.BASE_URL}qcm`)
+  //     .then(res => res.json())
+  //     .then((result) => {
+  //       setCount(result.Count)
+  //     })
+  // }, [])
   useEffect(() => {
-    fetch(`${CONSTANT.BASE_URL}qcm`)
-      .then(res => res.json())
-      .then((result) => {
-        setCount(result.Count)
-      })
-  }, [])
+    console.log(data);
+
+  }, [data])
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value)
   }
@@ -53,6 +58,7 @@ const QuestionForm = () => {
           console.log(result);
           if (result) toast.success(result.message, {duration: 4000, position: 'top-center'})
           await sleep(1500)
+          setSelectedQuestion(null)
           handleHome()
         },
         (error) => {
@@ -60,6 +66,11 @@ const QuestionForm = () => {
         }
       )
   }
+  
+const handleSetQuestion = ()=> {
+  if (setSelectedQuestion)
+    setSelectedQuestion(null)
+}
 
   return (
     <form onSubmit={handleSubmit}>
@@ -96,7 +107,7 @@ const QuestionForm = () => {
         </div>
         <div className="flex-center">
           <button type="submit">Submit</button>
-          <button><Link style={{"textDecoration": "none", color: "white"}} to="/">Cancel</Link></button>
+          <button><Link style={{"textDecoration": "none", color: "white"}} onClick={handleSetQuestion} to="/list">Cancel</Link></button>
         </div>
       </div>
     </form>

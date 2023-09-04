@@ -8,6 +8,7 @@ import Quiz from "./components/Quiz"
 import Connection from "./components/connection"
 import History from "./components/History";
 import QuestionForm from "./components/questionForm"
+import List from "./components/List";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/auth" element={<Connection/>} />
         <Route path="/create" element={<QuestionForm/>} />
+        <Route path="/list" element={<List/>} />
         <Route path="/history" element={<History/>} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
