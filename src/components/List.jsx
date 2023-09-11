@@ -2,35 +2,12 @@ import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import toast, {Toaster} from "react-hot-toast";
 import QuestionForm from "./questionForm";
+import {CONSTANT} from "../constant/constant";
 
 const List = () => {
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const [loading, setLoading] = useState(false)
-    const [questions, setQuestions] = useState([
-        {
-            "id": 1,
-            "question": "Quel mot clé est utilisé pour déclarer une variable en JavaScript ?",
-            "options": ["var", "let", "const", 'state'],
-            "correctAnswer": 1
-        },
-        {
-            "id": 2,
-            "question": "Quelle est la méthode utilisée pour ajouter un élément à la fin d'un tableau en JavaScript ?",
-            "options": ["push()", "append()", "concat()", "add"],
-            "correctAnswer": 0
-        },
-        {
-            "id": 3,
-            "question": "Quelle est la fonction utilisée pour afficher du texte dans la console en JavaScript ?",
-            "options": ["log()", "print()", "display()", "console.log"],
-            "correctAnswer": 0
-        },
-        {
-            "id": 4,
-            "question": "Quel opérateur est utilisé pour concaténer des chaînes de caractères en JavaScript ?",
-            "options": ["+", "&", "*", "."],
-            "correctAnswer": 0
-        }])
+    const [questions, setQuestions] = useState([])
 
     const renderEditQuestion = (data) => {
         setSelectedQuestion(data)
@@ -45,14 +22,60 @@ const List = () => {
         }
     }, [loading])
 
+    useEffect(() => {
+        fetch(`${CONSTANT.BASE_URL}questions`)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    setQuestions(result)
+                    setLoading(false)
+                })
+    }, [])
+const handleDelete = (id)=>{
+    console.log('delete')
+        const requestOptions = {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'},
+        }
+        fetch(`${CONSTANT.BASE_URL}questions/${id}`, requestOptions)
+            .then(res => {
+                if (res.status === 204) {
+                    const updatedQuestions = questions.filter((question) => question.id !== id);
+                    // Mettez à jour l'état avec la nouvelle liste de questions
+                    setQuestions(updatedQuestions);
+                } else {
+                    console.error('La suppression a échoué.');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur réseau :', error);
+            })
+
+
+}
     const renderListQuestion = () => {
         return (
             <div>
                 <ul>
                     {questions.map((data) => (
-                        <li key={data.id} onClick={()=>renderEditQuestion(data)}>{data.question} </li>
+                        <div style={{display:"flex"}}>
+                        <li key={data.id} onClick={()=>renderEditQuestion(data)}>{data.quest} </li>
+                            <button
+                                onClick={()=>handleDelete(data.id)}
+                                style={{
+                                size : "1px",
+                                color: "red",
+                                fontSize: "larger",
+                                marginTop:"25px",
+                                marginLeft: "10px",
+                                padding:"5px",
+                                background: "none"
+                            }}>X</button>
+                        </div>
+
                     ))}
                 </ul>
+
             </div>
         )
     }

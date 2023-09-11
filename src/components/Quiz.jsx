@@ -21,10 +21,10 @@ const Quiz = () => {
     wrongAnswers: 0,
   })
   useEffect(() => {
-    if (questions && activeQuestion < questions.Count) {
-      setQuestion(questions.Items[activeQuestion].question)
-      setProposal(questions.Items[activeQuestion].proposal)
-      setCorrect_answer(questions.Items[activeQuestion].correct_answer)
+    if (questions && activeQuestion < questions.length+1) {
+      setQuestion(questions[activeQuestion].quest)
+      setProposal(questions[activeQuestion].options.split(',').map(option => parseInt(option.trim())))
+      setCorrect_answer(questions[activeQuestion].correctAnswer)
     }
   }, [activeQuestion, questions])
 
@@ -47,14 +47,15 @@ const Quiz = () => {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          email: user.email,
+          email: user?.email || 'email.com',
           date: new Date(),
           correctAnswer: result.correctAnswers,
           score: result.score,
           wrongAnswers: result.wrongAnswers,
-          id: Date.now()
+
         })
       }
+      console.log(requestOptions,'requestOptions');
       fetch(`${CONSTANT.BASE_URL}game`, requestOptions)
         .then(res => res.json())
         .then((msg) => {
@@ -67,10 +68,10 @@ const Quiz = () => {
   }, [showResult])
 
   /**
-   * GetAll question
+   * GetAll questions
    */
   useEffect(() => {
-    fetch(`${CONSTANT.BASE_URL}qcm`)
+    fetch(`${CONSTANT.BASE_URL}questions`)
       .then(res => res.json())
       .then(
         (result) => {
@@ -91,7 +92,7 @@ const Quiz = () => {
         }
         : {...prev, wrongAnswers: prev.wrongAnswers + 1}
     )
-    if (activeQuestion !== questions.Items.length - 1) {
+    if (activeQuestion !== questions.length - 1) {
       setActiveQuestion((prev) => prev + 1)
     } else {
       setActiveQuestion(0)
@@ -115,7 +116,7 @@ const Quiz = () => {
         <div>
           <div>
             <span className="active-question-no">{addLeadingZero(activeQuestion + 1)}</span>
-            <span className="total-question">/{addLeadingZero(questions?.Items.length)}</span>
+            <span className="total-question">/{addLeadingZero(questions?.length)}</span>
           </div>
           <h2>{question}</h2>
           <ul>
@@ -130,7 +131,7 @@ const Quiz = () => {
           </ul>
           <div className="flex-right">
             <button onClick={onClickNext} disabled={selectedAnswerIndex === null}>
-              {activeQuestion === questions?.Items.length - 1 ? 'Finish' : 'Next'}
+              {activeQuestion === questions?.length - 1 ? 'Finish' : 'Next'}
             </button>
           </div>
         </div>
@@ -141,7 +142,7 @@ const Quiz = () => {
           <div>
             <h3>Result</h3>
             <p>
-              Total Question: <span>{questions?.Items.length}</span>
+              Total Question: <span>{questions?.length}</span>
             </p>
             <p>
               Total Score:<span> {result.score}</span>

@@ -8,19 +8,12 @@ const QuestionForm = (props) => {
   const [question, setQuestion] = useState(data?.question ||'')
   const [suggestions, setSuggestions] = useState(data?.options || ['', '', '', ''])
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(data?.correctAnswer || 0)
-  const [count, setCount] = useState(0)
   const navigate = useNavigate()
 
   const sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms))
   }
-  // useEffect(() => {
-  //   fetch(`${CONSTANT.BASE_URL}qcm`)
-  //     .then(res => res.json())
-  //     .then((result) => {
-  //       setCount(result.Count)
-  //     })
-  // }, [])
+
   useEffect(() => {
     console.log(data);
 
@@ -37,7 +30,7 @@ const QuestionForm = (props) => {
     setCorrectAnswerIndex(parseInt(event.target.value, 10))
   }
   const handleHome = () => {
-    navigate('/')
+    navigate('/react-github-pages')
   }
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -45,20 +38,20 @@ const QuestionForm = (props) => {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        id: count,
-        question: question,
-        proposal: suggestions,
-        correct_answer: suggestions[correctAnswerIndex]
+        quest: question,
+        options: suggestions.join(', '),
+        correctAnswer: suggestions[correctAnswerIndex]
       })
     }
-    fetch(`${CONSTANT.BASE_URL}qcm`, requestOptions)
+    console.log('requestOptions',requestOptions)
+    fetch(`${CONSTANT.BASE_URL}questions`, requestOptions)
       .then(res => res.json())
       .then(
         async (result) => {
           console.log(result);
           if (result) toast.success(result.message, {duration: 4000, position: 'top-center'})
           await sleep(1500)
-          setSelectedQuestion(null)
+          handleSetQuestion()
           handleHome()
         },
         (error) => {

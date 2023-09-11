@@ -11,8 +11,8 @@ const History = () => {
     fetch(`${CONSTANT.BASE_URL}game`)
       .then(res => res.json())
       .then(result => {
-        if (result.Count) {
-          const sortedGames = result.Items.sort(compareByTimestamp)
+        if (result.length) {
+          const sortedGames = result.sort(compareByTimestamp)
           setGames(sortedGames)
         } else {
           setGames([])
