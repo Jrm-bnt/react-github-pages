@@ -5,7 +5,7 @@ import toast, {Toaster} from "react-hot-toast";
 import {CONSTANT} from "../constant/constant";
 
 const Quiz = () => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(localStorage.getItem('email'))
   const [loading, setLoading] = useState(true)
   const [questions, setQuestions] = useState(null)
   const [question, setQuestion] = useState(null)
@@ -47,7 +47,7 @@ const Quiz = () => {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          email: user?.email || 'email.com',
+          email: user,
           date: new Date(),
           correctAnswer: result.correctAnswers,
           score: result.score,
