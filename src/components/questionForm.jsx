@@ -14,10 +14,6 @@ const QuestionForm = (props) => {
     return new Promise((resolve) => setTimeout(resolve, ms))
   }
 
-  useEffect(() => {
-    console.log(data);
-
-  }, [data])
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value)
   }

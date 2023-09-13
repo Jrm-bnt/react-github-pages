@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {CONSTANT} from "../constant/constant";
 import {useNavigate} from 'react-router-dom'
 
-function Login() {
+function Login(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate()
@@ -33,6 +33,7 @@ function Login() {
 
             // Stockez le token dans localStorage ou un autre endroit sécurisé
             localStorage.setItem('token', token);
+            props.setToken(token)
             localStorage.setItem('email', email);
 
            navigate('/react-github-pages')

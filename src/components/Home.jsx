@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 
-const Home = () => {
+const Home = (props) => {
+
     const email = localStorage.getItem('email')
     const navigate = useNavigate();
     const handleStartQuiz = () => {
@@ -17,6 +18,7 @@ const Home = () => {
 
     async function signOut() {
         try {
+            props.setToken(null)
             localStorage.removeItem("token");
             navigate('/login')
         } catch (error) {
