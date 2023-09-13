@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import {CONSTANT} from "../constant/constant";
+import {useNavigate} from 'react-router-dom'
 
 function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate()
 
     const handleLogin = () => {
-        window.location.href = '/login';
+       navigate('/login')
     }
 
     const handleSubmit = async (e) => {
@@ -22,10 +24,10 @@ function Register() {
             });
 
             if (!response.ok) {
-                throw new Error("L'enregistrement a échoué");
+                throw new Error("L'enregistrement à échoué");
             }
 
-            window.location.href = '/login';
+           navigate('/login')
         } catch (error) {
             console.error(error);
         }

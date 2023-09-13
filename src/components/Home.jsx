@@ -18,9 +18,7 @@ const Home = () => {
     async function signOut() {
         try {
             localStorage.removeItem("token");
-
-            // Redirigez l'utilisateur vers la page de connexion ou toute autre page appropriée
-            window.location.href = '/login'
+            navigate('/login')
         } catch (error) {
             console.log('error signing out: ', error)
         }

@@ -10,7 +10,7 @@ import Login from "./components/login";
 import Register from "./components/register";
 
 function App() {
-    const isAuthenticated = !!localStorage.getItem('token'); // Vérifiez si l'utilisateur est connecté
+    const isAuthenticated = !!localStorage.getItem('token')
 
     return (
         <BrowserRouter>
@@ -29,7 +29,6 @@ function App() {
 }
 
 function NoMatch() {
-    console.log(window.location.href);
     return (
         <div className="quiz-container flex-column">
             <h1>Nothing to see here!</h1>

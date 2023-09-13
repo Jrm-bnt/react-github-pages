@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import {CONSTANT} from "../constant/constant";
+import {useNavigate} from 'react-router-dom'
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate()
 
     const handleRegister = () => {
-        window.location.href = '/register';
+        navigate('/register')
     }
 
     const handleSubmit = async (e) => {
@@ -33,9 +35,7 @@ function Login() {
             localStorage.setItem('token', token);
             localStorage.setItem('email', email);
 
-            // Redirigez l'utilisateur vers la page souhaitée après la connexion réussie
-            // Par exemple, '/dashboard' ou '/react-github-pages'
-            window.location.href = '/react-github-pages';
+           navigate('/react-github-pages')
         } catch (error) {
             console.error(error);
         }
