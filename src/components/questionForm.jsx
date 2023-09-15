@@ -5,11 +5,10 @@ import {CONSTANT} from "../constant/constant";
 
 const QuestionForm = (props) => {
   const {data, setSelectedQuestion} = props
-  const [question, setQuestion] = useState(data?.question ||'')
-  const [suggestions, setSuggestions] = useState(data?.options || ['', '', '', ''])
+  const [question, setQuestion] = useState(data?.quest ||'')
+  const [suggestions, setSuggestions] = useState(data?.options.split(", ") || ['', '', '', ''])
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(data?.correctAnswer || 0)
   const navigate = useNavigate()
-
   const sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms))
   }
@@ -30,17 +29,28 @@ const QuestionForm = (props) => {
   }
   const handleSubmit = (event) => {
     event.preventDefault()
-    const requestOptions = {
+    const requestOptionsPOST = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         quest: question,
         options: suggestions.join(', '),
-        correctAnswer: suggestions[correctAnswerIndex]
+        correctAnswer:correctAnswerIndex
       })
     }
-    console.log('requestOptions',requestOptions)
-    fetch(`${CONSTANT.BASE_URL}questions`, requestOptions)
+    const requestOptionsPUT = {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        id: data?.id,
+        quest: question,
+        options: suggestions.join(', '),
+        correctAnswer:correctAnswerIndex
+      })
+    }
+    const URL = data?.quest ?`${CONSTANT.BASE_URL}questions/${data?.id}` : `${CONSTANT.BASE_URL}questions`
+    const requestOptions = data?.quest ? requestOptionsPUT : requestOptionsPOST
+    fetch(URL, requestOptions)
       .then(res => res.json())
       .then(
         async (result) => {
@@ -52,6 +62,7 @@ const QuestionForm = (props) => {
         },
         (error) => {
           console.log('\x1b[32m%s\x1b[0m', 'error', error)
+          handleHome()
         }
       )
   }

@@ -23,7 +23,7 @@ const Quiz = () => {
   useEffect(() => {
     if (questions && activeQuestion < questions.length+1) {
       setQuestion(questions[activeQuestion].quest)
-      setProposal(questions[activeQuestion].options.split(',').map(option => parseInt(option.trim())))
+      setProposal(questions[activeQuestion].options.split(',').map(option => option.trim()))
       setCorrect_answer(questions[activeQuestion].correctAnswer)
     }
   }, [activeQuestion, questions])
@@ -55,7 +55,6 @@ const Quiz = () => {
 
         })
       }
-      console.log(requestOptions,'requestOptions');
       fetch(`${CONSTANT.BASE_URL}game`, requestOptions)
         .then(res => res.json())
         .then((msg) => {
@@ -102,7 +101,7 @@ const Quiz = () => {
 
   const onAnswerSelected = (answer, index) => {
     setSelectedAnswerIndex(index)
-    if (answer === correct_answer) {
+    if (index === correct_answer) {
       setSelectedAnswer(true)
     } else {
       setSelectedAnswer(false)
