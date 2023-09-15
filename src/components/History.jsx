@@ -53,7 +53,7 @@ const History = () => {
                 <td>{game.score}</td>
                 <td>{new Date(game.date).toLocaleString()}</td>
                 <td>{game.correctAnswer}</td>
-                <td>{game.wrongAnswers}</td>
+                <td>{game.wrongAnswer}</td>
                 <td>{game.email}</td>
               </tr>
             ))}

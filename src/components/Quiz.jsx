@@ -51,7 +51,7 @@ const Quiz = () => {
           date: new Date(),
           correctAnswer: result.correctAnswers,
           score: result.score,
-          wrongAnswers: result.wrongAnswers,
+          wrongAnswer: result.wrongAnswers,
 
         })
       }
